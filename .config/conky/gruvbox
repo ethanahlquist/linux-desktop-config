@@ -1,0 +1,2 @@
+conky -c ~/.config/conky/shortcuts_gruvbox.conkyrc & sleep 1s
+conky -c ~/.config/conky/sysinfo_gruvbox.conkyrc & sleep 1s

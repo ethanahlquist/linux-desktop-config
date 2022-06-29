@@ -1,0 +1,16 @@
+#!/bin/bash
+#
+# Wrapper for xrandr, so wallpaper and Conky are reloaded on resolution change.
+#
+# Copyright (C) 2022 Daniel Napora - maboxlinux.org
+# Licensed under GPLv3
+
+set -euo pipefail
+
+/usr/bin/xrandr "$@"
+if [[ "$@" == *"--output"* ]];then
+    nitrogen --restore
+    if pgrep conky;then
+        killall -SIGUSR1 conky 2> /dev/null
+    fi
+fi

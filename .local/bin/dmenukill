@@ -1,0 +1,15 @@
+#!/bin/bash
+
+# Gives a dmenu prompt displaying a sorted mem and cpu process list, any
+# selected command name will have all it's processes pkilled
+
+choice_list="$(ps axo %mem,%cpu,comm --sort comm --no-headers | awk 'BEGIN { FS=OFS=" "}{a0[$3]+=$1; a1[$3]+=$2 }END {for (i in a0) printf ("%-7s%-7s%s\n", a0[i], a1[i], i)}' | sort -k 1rn,2rn )"
+
+gettoPrompt="$(printf '%-7s%-7s%s' '[mem]' '[cpu]' '[command]')"
+
+choice=$(echo -e "${gettoPrompt}\n${choice_list}" | dmenu -i -l 30 | awk '{ print $NF }')
+
+# Exit if none chosen.
+[ -z "$choice" ] && exit
+
+pkill -9 "$choice"

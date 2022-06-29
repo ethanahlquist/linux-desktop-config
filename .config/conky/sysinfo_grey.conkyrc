@@ -1,0 +1,80 @@
+conky.config = {
+
+	own_window = true,
+	own_window_type = 'desktop',
+	own_window_transparent = true,
+	own_window_hints = 'undecorated,below,sticky,skip_taskbar,skip_pager',
+	own_window_colour = '#000000',
+	own_window_class = 'Conky',
+	own_window_title = 'Mabox Monitor Conky Grey',
+
+	gap_x = 15,
+	gap_y = 50,
+	alignment = 'top_right',
+	minimum_width = '200',
+	minimum_width = 200,
+
+	use_xft = true,
+	font = 'Cantarell:size=9',
+	xftalpha = 1,
+	override_utf8_locale = true,
+	draw_shades = false,--yes
+	default_shade_color = '#000000',
+	draw_outline = false,
+	default_outline_color = '#222222',
+
+	color2 = '#778899',
+	color3 = '#006600',
+	cpu_avg_samples = 2,
+	default_color = '#FFFFFF',
+
+	draw_borders = false,--yes
+
+	stippled_borders = 5,
+	border_inner_margin = 5,
+	border_outer_margin = 0,
+	border_width = 2,
+
+
+	background = true,
+	no_buffers = true,
+	imlib_cache_size = 0,
+
+	double_buffer = true,
+	update_interval = 1,
+};
+
+conky.text = [[
+${voffset 8}$color${font Cantarell:size=16}${time %A}$font${voffset -18}$alignr${color3}${font Cantarell:size=38}${time %e}$font
+$color${voffset -20}$color${font Cantarell:size=18}${time %B}$font${voffset -1} $color${font Cantarell:size=20}${time %Y}$font
+#${voffset 10}$alignr$color Kraków (PL) ${weather http://weather.noaa.gov/pub/data/observations/metar/stations/ EPKK temperature temperature 15}°C
+#
+${voffset 10}${goto 40}${color}CPU$alignr$cpu%
+$color2${goto 40}$alignr${cpubar 4,165}
+${voffset 5}${goto 40}$font$color2${top name 1}$alignr$color${top cpu 1}%
+${goto 40}$color2${top name 2}$alignr$color${top cpu 2}%
+${goto 40}$color2${top name 3}$alignr$color${top cpu 3}%
+${goto 40}$color2${top name 4}$alignr$color${top cpu 4}%
+#
+${voffset 10}${goto 40}${color}RAM$alignr$legacymem/$memmax
+$color2${goto 40}$alignr${membar 4,165}
+${goto 40}${voffset 5}$color2${top_mem name 1}$alignr$color${top_mem mem_res 1}
+${goto 40}$color2${top_mem name 2}$alignr$color${top_mem mem_res 2}
+${goto 40}$color2${top_mem name 3}$alignr$color${top_mem mem_res 3}
+${goto 40}$color2${top_mem name 4}$alignr$color${top_mem mem_res 4}
+#
+${voffset 10}$alignr disk ${color2}${fs_used /} - ${fs_size /}
+$alignr$color memory ${color2}$legacymem - $memmax
+#${alignr}${color2}${font Cantarell:size=9}swap $swapmax - $swap
+#
+${voffset 10}$alignr${color} Mabox Linux ${execi 10000 awk -F'=' '/DISTRIB_RELEASE=/ {printf $2" "} /CODENAME/ {print $2}' /etc/lsb-release}
+#
+${voffset 10}$alignr${execi 1200 whoami}@${nodename}
+${alignr}${color2}${font Cantarell:size=9}uptime ${color}${uptime_short}
+${alignr}${color2}${font Cantarell:size=9}${alignr}kernel ${color}${kernel}
+${alignr}${color2}${font Cantarell:size=9}${alignr}arch ${color}${machine}
+${alignr}${color2}${font Cantarell:size=9}${alignr}filesystem ${color}${fs_type}
+${voffset 10}${alignr}${color} available updates ${color3}${font Cantarell:bold:size=10}${execpi 1800 pamac checkupdates -aq| wc -l}${font}${color}
+${alignr}${color} installed pkgs: ${color2}${execi 10000 pacman -Q | wc -l}
+${alignr}${color} branch: ${color2}${execi 10000 pacman-mirrors -G}
+]];

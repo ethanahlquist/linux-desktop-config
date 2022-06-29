@@ -1,0 +1,8 @@
+[Desktop Entry]
+Name=GKrellm
+Comment=GKrellm Monitor 
+Icon=gkrellm
+Exec=gkrellm
+Terminal=false
+Type=Application
+Hidden=true

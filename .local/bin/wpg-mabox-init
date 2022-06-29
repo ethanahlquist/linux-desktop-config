@@ -1,0 +1,87 @@
+#!/usr/bin/env bash
+CONFIG="${HOME}/.config" 
+THEMES_DIR="${HOME}/.themes";
+TEMPLATE_DIR="${HOME}/.config/wpg/templates";
+LOCAL="${HOME}/.local/share"
+
+mkdir -p "${THEMES_DIR}"
+
+# GTK2
+ln -sf "${LOCAL}/themes/FlatColor/gtk-2.0/gtkrc" "${TEMPLATE_DIR}/gtk2" && \
+ln -sf "${LOCAL}/themes/FlatColor" "${THEMES_DIR}/FlatColor" && \
+
+# GTK 3
+ln -sf "${LOCAL}/themes/FlatColor/gtk-3.0/gtk.css" "${TEMPLATE_DIR}/gtk3.0"
+ln -sf "${LOCAL}/themes/FlatColor/gtk-3.20/gtk.css" "${TEMPLATE_DIR}/gtk3.20" 
+
+# Openbox
+#mv "${TEMPLATE_DIR}/themerc.base" "${TEMPLATE_DIR}/ob_colorbamboo.base"
+ln -sf "${LOCAL}/themes/colorbamboo/openbox-3/themerc" "${TEMPLATE_DIR}/ob_colorbamboo" && \
+ln -sf "${LOCAL}/themes/colorbamboo" "${THEMES_DIR}/colorbamboo" && \
+
+
+# Mabox 
+# tint2
+ln -sf "${CONFIG}/tint2/mabox_colorize.tint2rc" "${TEMPLATE_DIR}/mabox_colorize.tint2rc"
+
+# Conkies
+ln -sf "${CONFIG}/conky/sysinfo_colorize.conkyrc" "${TEMPLATE_DIR}/sysinfo_colorize.conkyrc"
+ln -sf "${CONFIG}/conky/shortcuts_colorize.conkyrc" "${TEMPLATE_DIR}/shortcuts_colorize.conkyrc"
+
+# Menu/Panels theme
+ln -sf "${CONFIG}/mabox/jgobthemes/colorbamboo.colorrc" "${TEMPLATE_DIR}/colorbamboo.colorrc"
+
+
+#Add all wallpapers to wpgtk
+wallp=( adam-kool-ndN00KmbJ1c-unsplash.jpg
+akin-EjUuUK8gtjs-unsplash.jpg
+ameen-fahmy-213555-unsplash.jpg
+anders-jilden-GjwsHRIcQjU-unsplash.jpg
+angelina-kichukova-1i6mrD_t9gA-unsplash.jpg
+b294f8793a9bee811590f0e5be04afaad5b0d458.jpeg
+Chicago-00-fastnlite.png
+Cyberpunk-Neon-Wallpaper.jpg
+dark_ocean.jpg
+derrick-cooper-L505cPnmIds-unsplash.jpg
+dracula-base.png
+frances-gunn-57423-unsplash.jpg
+grove-mabox-dark.jpg
+gruvbox.png
+hrvoje_photography-pdRsf77OBoo-unsplash.jpg
+ian-parker-p7Hh9SIW22M-unsplash.jpg
+japanwhite.jpg
+johannes-plenio-tNd8VXPjq0Q-unsplash.jpg
+linux02b.jpg
+linux02.jpg
+mabox-cube-green.jpg
+mabox_linux2_by_markus.jpg
+mabox_linux_by_markus.jpg
+mabox-lite.jpg
+mabox-lumo.jpg
+mabox-minimal-green-02.png
+mabox-minimal-grey-02.png
+Mabox-space.jpg
+mabox-terminator.png
+mabox-text.jpg
+manjaro-arch.jpg
+Manjaro_mirror.jpg
+marek-piwnicki-6Ui3i2RQMuY-unsplash.jpg
+marek-piwnicki-FgagFhxW4Sc-unsplash.jpg
+marek-piwnicki-LGgKrtjNsoI-unsplash.jpg
+M_by_markus.jpg
+nolimit-pink.jpg
+patrick-fore-850jTF12RSQ-unsplash.jpg
+qi-bin-W4HBAfegIAc-unsplash.jpg
+unsplash_u713mzx1x0w-drew-collins.jpg )
+for i in "${wallp[@]}"
+do
+   ln -sf "/usr/share/backgrounds/${i}" ~/.config/wpg/wallpapers/"${i}"
+done
+
+#Rename pregenerated schemes (colors)
+
+rename _dn_ _${USER}_ "${HOME}"/.config/wpg/schemes/*.json
+
+
+rm "${HOME}"/.config/wpg/.mabox-init
+

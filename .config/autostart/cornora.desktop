@@ -1,0 +1,8 @@
+[Desktop Entry]
+Name=Hot Corners
+Comment=Hot Corners - cornora 
+Icon=
+Exec=cornora -tl "mb-jgtools places" -tr "mb-jgtools right" -iof
+Terminal=false
+Type=Application
+Hidden=true

@@ -1,0 +1,2 @@
+conky -c ~/.config/conky/shortcuts_grey.conkyrc & sleep 1s
+conky -c ~/.config/conky/sysinfo_grey.conkyrc & sleep 1s

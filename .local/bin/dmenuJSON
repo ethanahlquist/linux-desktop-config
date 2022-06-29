@@ -1,0 +1,174 @@
+#!/usr/bin/env python3
+
+from dataclasses import dataclass
+import subprocess
+import sys
+import json
+import os
+
+DEFAULT_TERMINAL_COMMAND = "alacritty -- "
+
+@dataclass
+class DmenuInputs:
+    files: ...
+    options: ...
+    prompt: ...
+    dmenu_options: ...
+
+    def __iter__(self):
+        return iter((self.files, self.options, self.prompt, self.dmenu_options))
+
+def dmenu(options=None, prompt=None ,dmenu_options=None):
+    """
+    Opens dmenu with given options and returns the index of the chosen option
+    Arguments
+    ------------
+    options: list of strings to be selected from
+    prompt: info text in front of selection
+    dmenu_options: list of options to be passed to dmenu (see man dmenu)
+    Returns
+    ------------
+    index of selected item (None in case of failure e.g. due to no selection)
+    """
+    command = ["dmenu"]
+    if prompt != None:
+        command += ["-p", f"{prompt}"]
+    if dmenu_options != None:
+        command += dmenu_options if type(dmenu_options) == list else [dmenu_options]
+    proc = subprocess.Popen(
+        command, stdin=subprocess.PIPE, stdout=subprocess.PIPE
+    )
+
+    for option in options:
+        proc.stdin.write((option + "\n").encode())
+    stdout, _ = proc.communicate()
+
+    try:
+        index = options.index(stdout.splitlines()[0].decode())
+    except Exception:
+        return
+
+    return index
+
+def argsort(seq):
+    """Returns indices of ascendingly ordered list"""
+    # https://stackoverflow.com/questions/3382352/equivalent-of-numpy-argsort-in-basic-python
+    return sorted(range(len(seq)), key=seq.__getitem__)
+
+def parse_json(data):
+
+    # parse JSON file
+    prompt = None
+    if "prompt" in data.keys():
+        prompt = data["prompt"]
+
+    # options to be passed to dmenu command (see man dmenu)
+    dmenu_options = None
+    if "dmenu-options" in data.keys():
+        dmenu_options = data["dmenu-options"]
+
+    if "file-directory" in data.keys():
+        file_dir = data["file-directory"]
+
+    # terminal emulator to be used to run scripts
+    termCmd = DEFAULT_TERMINAL_COMMAND
+    if "terminal-emulator" in data.keys():
+        termCmd = data["terminal-emulator"]
+
+    # order in which options are displayed
+    order = "custom"
+    if "order" in data.keys():
+        order = data["order"]
+
+    # options need to be contained in JSON file
+    if "options" not in data.keys():
+        print("Error: No options specified in JSON file ", sys.argv[1],file=sys.stderr)
+
+    # array containing display texts
+    options = []
+    # array containing files / commands to be run when option is selected
+    files = []
+
+    for option in data["options"]:
+        if ("file" not in option.keys()) and ("command" not in option.keys()):
+            print("Error: Neither 'file' nor 'command' field specified in at least one option in JSON file ", sys.argv[1],file=sys.stderr)
+            exit()
+        if ("file"  in option.keys()) and ("command" in option.keys()):
+            print("Error: Both 'file' and 'command' field specified in at least one option in JSON file ", sys.argv[1],file=sys.stderr)
+            exit()
+
+        # add text to be displayed to options array
+        if "name" in option.keys():
+            options += [option["name"]]
+        elif "file" in option.keys():
+            options += [option["file"]]
+        else:
+            options += [option["command"]]
+
+        # add action to be done when option is selected
+        if "file" in option.keys():
+            f = f"{file_dir}/{option['file']}"
+        else:
+            f = f"{option['command']}"
+        if ("runInTerminal" in option.keys()) and option["runInTerminal"]:
+            f = termCmd + " " + f
+        files += [f]
+
+    # change order of options if selected
+    if order in ["asc","desc"]:
+        orderedIndices = argsort(options)
+        if order == "desc":
+            orderedIndices.reverse()
+        filesOld = files
+        optionsOld = options
+        files = []
+        options = []
+        for index in orderedIndices:
+            files += [filesOld[index]]
+            options += [optionsOld[index]]
+        filesOld.clear()
+        optionsOld.clear()
+
+    return DmenuInputs(files, options, prompt, dmenu_options)
+
+
+def call_dmenu(menu_inputs):
+
+    files,options,prompt,dmenu_options = menu_inputs
+
+    # call to dmenu
+    index = dmenu(options,prompt,dmenu_options)
+    if index == None:
+        #print("[No option selected]")
+        exit()
+
+    return files[index]
+
+
+
+def main():
+    # check arguments passed to script
+    if len(sys.argv) < 2:
+        print("usage: python3", sys.argv[0], "[JSON file]" ,file=sys.stderr)
+        exit()
+    else:
+        file = open(sys.argv[1],"r")
+        file_dir = os.path.dirname(os.path.realpath(sys.argv[1]))
+
+    # load JSON file
+    data = json.load(file)
+
+    menu_inputs = parse_json(data)
+    choice = call_dmenu(menu_inputs)
+
+    print(choice)
+
+    # run desired action
+    #os.system(f"({choice})&")
+
+    file.close()
+
+
+
+if __name__ == "__main__":
+    main()

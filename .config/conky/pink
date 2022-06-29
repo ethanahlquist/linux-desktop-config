@@ -1,0 +1,2 @@
+conky -c ~/.config/conky/shortcuts_pink.conkyrc & sleep 1s
+conky -c ~/.config/conky/sysinfo_pink.conkyrc & sleep 1s

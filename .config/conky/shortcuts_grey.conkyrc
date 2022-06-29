@@ -1,0 +1,113 @@
+conky.config = {
+-- WINDOW
+	own_window = true,
+	own_window_type = 'desktop',
+	own_window_transparent = true,
+	own_window_hints = 'undecorated,below,skip_taskbar,skip_pager,sticky',
+	own_window_colour = '#000000',
+	own_window_class = 'Conky',
+	own_window_title = 'Mabox Shortcuts Conky Grey',
+
+	gap_x = 15,
+	gap_y = 45,
+	minimum_width = '200',
+
+-- FONTS
+
+	use_xft = true,
+	font = 'Cantarell:size=9',
+	xftalpha = 1,
+	override_utf8_locale = true,
+
+-- COLORS
+	draw_shades = false,--yes
+	default_shade_color = '#000000',
+	draw_outline = false,
+	default_outline_color = '#222222',
+
+	default_color = '#FFFFFF',
+	color0 = '#B0E0E6',-- PowderBlue
+	color1 = '#778899',-- LightSlateGray
+	color2 = '#778899',
+	color3 = '#9ACD32',-- YellowGreen
+	color4 = '#FFA07A',-- LightSalmon
+	color5 = '#FFDEAD',-- NavajoWhite
+	color6 = '#00BFFF',-- DeepSkyBlue
+	color7 = '#5F9EA0',-- CadetBlue
+	color8 = '#BDB76B',-- DarkKhaki
+	color9 = '#CD5C5C',-- IndianRed
+
+-- BORDERS
+	draw_borders = false,--yes
+-- Stippled borders?
+	stippled_borders = 5,
+-- border margins
+	border_inner_margin = 5,
+	border_outer_margin = 0,
+-- border width
+	border_width = 2,
+-- graph borders
+-- draw_graph_borders yes
+-- default_graph_size 15 40
+
+-- MISC
+
+-- Boolean value, if true, Conky will be forked to background when started.
+	background = true,
+
+-- Adds spaces around certain objects to stop them from moving other things
+-- around, this only helps if you are using a mono font
+-- Options: right, left or none
+	use_spacer = 'none',
+
+-- Subtract (file system) buffers from used memory?
+	no_buffers = true,
+
+-- Imlib2 image cache size, in bytes. Default 4MiB Increase this value if you use
+-- $image lots. Set to 0 to disable the image cache.
+	imlib_cache_size = 0,
+
+-- Use the Xdbe extension? (eliminates flicker)
+-- It is highly recommended to use own window with this one
+-- so double buffer won't be so big.
+	double_buffer = true,
+
+	update_interval = 1,
+};
+
+conky.text = [[
+${color}RUN${alignr}${color2}super = windows key${voffset -6}
+${color2}${hr 1}${voffset -4}
+${color2}menu  ${alignr}${color}super / super+spacebar
+${color2}file manager  ${alignr}${color}super+f
+${color2}web browser  ${alignr}${color}super+w
+${color2}terminal  ${alignr}${color}super+t
+${color2}quake-terminal  ${alignr}${color}ctrl+~
+${color2}volume control  ${alignr}${color}super+v
+${color2}toggle Picom  ${alignr}${color}super+p
+${color2}toggle Conky  ${alignr}${color}super+alt+c
+${color2}lock screen  ${alignr}${color}super+l
+${color2}exit  ${alignr}${color}super+x
+${color}SIDEPANELS${voffset -6}
+${color2}${hr 1}${voffset -4}
+${color2}Left ${alignr} ${color}ctrl+super+left
+${color2}Right ${alignr} ${color}ctrl+super+right
+${color2}Places ${alignr} ${color}super+.
+${color2}Settings menu ${alignr} ${color}super+s
+${color}WINDOWS${voffset -6}
+${color2}${hr 1}${voffset -4}
+${color2}close ${alignr} ${color}alt+F4
+${color2}iconify ${alignr} ${color}alt+F5
+${color2}maximize ${alignr} ${color}alt+F6
+${color2}show desktop ${alignr} ${color}super+d
+${color2}un/decorate ${alignr} ${color}super+b
+${color2}toggle fullscreen ${alignr} ${color}F11
+${color2}windows placement: 
+${color2} - half screen ${alignr} ${color}super+arrows
+${color2} - 1/4 screen ${alignr} ${color}super+numpad[1..9]
+${color}DESKTOPS${voffset -6}
+${color2}${hr 1}${voffset -4}
+${color2}go to desktop ${alignr} ${color}super+[1..4]
+]];
+
+

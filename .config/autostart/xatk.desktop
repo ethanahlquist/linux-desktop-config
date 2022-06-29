@@ -1,0 +1,11 @@
+[Desktop Entry]
+Encoding=UTF-8
+Version=1.0
+Name=Xatk
+Comment=a keyboard-driven window switcher for x11
+GenericName=
+Type=Application
+Exec=xatk
+Categories=Utility;
+Hidden=true
+NoDisplay=true

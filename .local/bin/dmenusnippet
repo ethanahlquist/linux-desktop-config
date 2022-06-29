@@ -1,0 +1,20 @@
+#!/bin/sh
+
+# Get a menu of snippets script.
+
+# Get user selection via dmenu from snippets file.
+
+json_file="${HOME}/.local/share/larbs/snippets.json"
+choice=$("${HOME}/.local/bin/dmenuJSON" ${json_file})
+
+# Exit if none choice.
+[ -z "$choice" ] && exit
+
+# If you run this command with an argument, it will automatically insert the
+# character. Otherwise, show a message that the emoji has been copied.
+if [ -n "$1" ]; then
+	xdotool type "$choice"
+else
+	printf "$choice" | xclip -selection clipboard
+	notify-send "'$choice' copied to clipboard." &
+fi

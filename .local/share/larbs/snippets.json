@@ -1,0 +1,15 @@
+{
+    "prompt": "Select command",
+    "dmenu-options": ["-l", "30", "-i"],
+    "file-directory": "~/.config/i3/scripts",
+    "order": "asc",
+    "options": [{
+            "name": "AD pass",
+            "command": "VuhZBH5SkXy3ZTdR"
+        },
+        {
+            "name": "AD fatt",
+            "command": "VuhZBH5SkXy3ZTdR"
+        }
+    ]
+}

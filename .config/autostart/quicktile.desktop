@@ -1,0 +1,12 @@
+
+[Desktop Entry]
+Encoding=UTF-8
+Version=1.0
+Name=QuickTile
+Comment=Tile Windows by Ctrl+Alt+KP_1..9
+GenericName=Window-Tiling Helper
+Type=Application
+Exec=quicktile --daemonize
+Categories=Utility;
+Hidden=false
+NoDisplay=true

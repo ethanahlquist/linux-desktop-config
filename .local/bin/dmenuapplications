@@ -1,0 +1,24 @@
+#!/bin/bash
+
+# Gives a dmenu prompt to mount unmounted drives and Android phones. If
+# they're in /etc/fstab, they'll be mounted automatically. Otherwise, you'll
+# be prompted to give a mountpoint from already existsing directories. If you
+# input a novel directory, it will prompt you to create that directory.
+
+function to_key {
+	sed -e 's/.*\/\(.*\)\.desktop$/\1/g' </dev/stdin
+}
+
+find /usr/share/applications ~/.local/share/applications -type f | tee >(to_key) >/tmp/values | cat >/tmp/keys
+
+declare -A dmenu_to_file_dict
+
+while read kname <&3 && read vname <&4; do
+   dmenu_to_file_dict["${kname}"]="${vname}"
+done 3</tmp/keys 4</tmp/values
+
+choice=$(cat /tmp/keys | dmenu -l 20)
+
+[ -z "$choice" ] && exit
+
+$EDITOR ${dmenu_to_file_dict["${choice}"]}

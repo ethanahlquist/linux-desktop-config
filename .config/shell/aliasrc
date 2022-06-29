@@ -1,0 +1,93 @@
+#!/bin/sh
+
+# Use neovim for vim if present.
+[ -x "$(command -v nvim)" ] && alias vim="nvim" vimdiff="nvim -d"
+
+# Use $XINITRC variable if file exists.
+[ -f "$XINITRC" ] && alias startx="startx $XINITRC"
+
+# sudo not required for some system commands
+for command in mount umount sv pacman updatedb su shutdown poweroff reboot ; do
+	alias $command="sudo $command"
+done; unset command
+
+# Verbosity and settings that you pretty much just always are going to want.
+alias \
+	cp="cp -iv" \
+	mv="mv -iv" \
+	rm="rm -vI" \
+	bc="bc -ql" \
+	mkd="mkdir -pv" \
+	yt="yt-dlp --embed-metadata -i" \
+	yta="yt -x -f bestaudio/best" \
+	ffmpeg="ffmpeg -hide_banner"
+
+# Colorize commands when possible.
+alias \
+	ls="ls -hN --color=auto --group-directories-first" \
+	grep="grep --color=auto" \
+	diff="diff --color=auto" \
+	ccat="highlight --out-format=ansi" \
+	ip="ip -color=auto"
+
+# These common commands are just too long! Abbreviate them.
+alias \
+	ka="killall" \
+	g="git" \
+	la="ls -a" \
+	ll="ls -l" \
+	trem="transmission-remote" \
+	YT="youtube-viewer" \
+	sdn="shutdown -h now" \
+	e="$EDITOR" \
+	v="$EDITOR" \
+	p="pacman" \
+	xi="sudo xbps-install" \
+	xr="sudo xbps-remove -R" \
+	xq="xbps-query" \
+	z="zathura"
+
+# These common commands are just too long! (Ethan)
+alias \
+	x="exit" \
+	clip="xclip -selection clipboard" \
+	clip_targets="xclip -selection clipboard -t TARGETS -o" \
+	clip_png="xclip -selection clipboard -t image/png" \
+	clip_jpg="xclip -selection clipboard -t image/jpg"
+
+alias \
+	lf="lfub" \
+	magit="nvim -c MagitOnly" \
+	ref="shortcuts >/dev/null; source ${XDG_CONFIG_HOME:-$HOME/.config}/shell/shortcutrc ; source ${XDG_CONFIG_HOME:-$HOME/.config}/shell/zshnameddirrc" \
+	weath="less -S ${XDG_DATA_HOME:-$HOME/.local/share}/weatherreport" \
+
+	#youtube_dl_subtitles="youtube-dl --write-srt --sub-lang en -f 'bestvideo[height<=?1080]+bestaudio/best'"
+alias \
+	youtube_dl_subtitles="youtube-dl --write-srt --sub-lang en -f 'bestvideo[height<=?720]+bestaudio/best'" \
+	llnl-connect="sudo openconnect --csd-user=ethan --csd-wrapper=${HOME}/.cisco/csd-post.sh --os=linux --protocol=anyconnect --authgroup=llnl-vpnc vpn.llnl.gov" \
+	proton_experimental="${HOME}/.steam/steam/steamapps/common/Proton\ -\ Experimental/proton" \
+	proton="proton_experimental"
+#
+# # ex - archive extractor
+# # usage: ex <file>
+ex ()
+{
+  if [ -f $1 ] ; then
+    case $1 in
+      *.tar.bz2)   tar xjf $1   ;;
+      *.tar.gz)    tar xzf $1   ;;
+      *.bz2)       bunzip2 $1   ;;
+      *.rar)       unrar x $1     ;;
+      *.gz)        gunzip $1    ;;
+      *.tar)       tar xf $1    ;;
+      *.tbz2)      tar xjf $1   ;;
+      *.tgz)       tar xzf $1 --one-top-level  ;;
+      *.zip)       unzip $1     ;;
+      *.Z)         uncompress $1;;
+      *.7z)        7z x $1      ;;
+      *)           echo "'$1' cannot be extracted via ex()" ;;
+    esac
+  else
+    echo "'$1' is not a valid file"
+  fi
+}

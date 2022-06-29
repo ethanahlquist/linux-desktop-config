@@ -1,0 +1,59 @@
+#!/bin/bash
+
+# Gives a dmenu prompt displaying a sorted mem and cpu process list, any
+# selected command name will have all it's processes pkilled
+
+
+# IFS= read -r some_data
+# echo ${some_data}
+
+usage() { echo "Usage: $0 [-s <45|90>] [-p <string>]" 1>&2; exit 1; }
+
+get_target() {
+    if [ $# -eq 0 ]; then
+        targets="$(xclip -t TARGETS -o <&1)"
+    else
+        targets="$(xclip -t TARGETS -o "$@")"
+    fi
+
+    #regex='(([a-zA-Z]*\/)?(png|jpeg|TEXT|UTF8_STRING))'
+    regex='((png|jpeg|TEXT|UTF8_STRING))'
+
+    if [[ $targets =~ $regex ]] ; then
+        target="${BASH_REMATCH[1]}"
+    else
+        target="TEXT"
+    fi
+    echo "$target"
+}
+
+while getopts ":ot:s:" o; do
+    case "${o}" in
+        t)
+            target=${OPTARG}
+            ;;
+        o)
+            output=true
+            ;;
+        s)
+            select=${OPTARG}
+            ;;
+        *)
+            usage
+            ;;
+    esac
+done
+shift $((OPTIND-1))
+
+[ -z "${select}"] && select="clipboard"
+
+
+# collecting from file, then we determine its target
+if [ -z "${output}"]; then
+    xclip -selection $select -t $target "$@"
+
+# Determine ouptut target based on priority list
+else
+    [ -z "${target}"] && target=$(get_target "$@")
+    xclip -selection $select -t $target -o
+fi

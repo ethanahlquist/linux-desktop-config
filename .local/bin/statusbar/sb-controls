@@ -1,0 +1,14 @@
+#!/bin/sh
+
+displayicon() { printf " %s" "🐧"; }
+
+blockmanager() { echo "dumb"; }
+
+case $BLOCK_BUTTON in
+	#1) setsid -f "$TERMINAL" -e  ;;
+	#2) getforecast && showweather ;;
+	3) notify-send "🐧 Dwm-blocks controler" "\-left click to toggle blocks";;
+	6) "$TERMINAL" -e "$EDITOR" "$0" ;;
+esac
+
+displayicon
